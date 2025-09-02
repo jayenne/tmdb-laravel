@@ -33,17 +33,14 @@ abstract class EventDispatcherAdapter implements SymfonyDispatcher
     /**
      * Dispatches an event to all registered listeners.
      *
-     * @param object|null $event The event to pass to the event handlers/listeners.
-     *                          If not supplied, an empty Event instance is created.
-     *
-     *
+     * @param object $event The event to pass to the event handlers/listeners.
      * @param string|null $eventName The name of the event to dispatch. The name of
      *                          the event is the name of the method that is
      *                          invoked on listeners.
      * @return object
      * @api
      */
-    public function dispatch(object $event = null, string $eventName = null) : object
+    public function dispatch(object $event, ?string $eventName = null): object
     {
         $this->laravelDispatcher->dispatch($event, $eventName);
         $this->symfonyDispatcher->dispatch($event, $eventName);
@@ -105,11 +102,11 @@ abstract class EventDispatcherAdapter implements SymfonyDispatcher
     /**
      * Gets the listeners of a specific event or all listeners.
      *
-     * @param string $eventName The name of the event
+     * @param string|null $eventName The name of the event
      *
      * @return array The event listeners for the specified event, or all event listeners by event name
      */
-    public function getListeners(string $eventName = null): array
+    public function getListeners(?string $eventName = null): array
     {
         return $this->symfonyDispatcher->getListeners($eventName);
     }
@@ -117,11 +114,11 @@ abstract class EventDispatcherAdapter implements SymfonyDispatcher
     /**
      * Checks whether an event has any registered listeners.
      *
-     * @param string $eventName The name of the event
+     * @param string|null $eventName The name of the event
      *
      * @return bool true if the specified event has any listeners, false otherwise
      */
-    public function hasListeners(string $eventName = null): bool
+    public function hasListeners(?string $eventName = null): bool
     {
         return ($this->symfonyDispatcher->hasListeners($eventName) ||
             $this->laravelDispatcher->hasListeners($eventName));
@@ -137,7 +134,7 @@ abstract class EventDispatcherAdapter implements SymfonyDispatcher
      *
      * @return int|null The event listener priority
      */
-    public function getListenerPriority($eventName, $listener): ?int
+    public function getListenerPriority(string $eventName, callable $listener): ?int
     {
         return $this->symfonyDispatcher->getListenerPriority($eventName, $listener);
     }
