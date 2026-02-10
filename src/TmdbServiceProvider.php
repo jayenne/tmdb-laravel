@@ -13,6 +13,7 @@ use Tmdb\Event\Listener\Request\ApiTokenRequestListener;
 use Tmdb\Event\Listener\Request\ContentTypeJsonRequestListener;
 use Tmdb\Event\Listener\Request\UserAgentRequestListener;
 use Tmdb\Event\Listener\RequestListener;
+use Illuminate\Contracts\Foundation\Application;
 use Tmdb\Event\RequestEvent;
 use Tmdb\Laravel\TmdbServiceProviderLaravel;
 use Tmdb\Client;
@@ -41,15 +42,12 @@ class TmdbServiceProvider extends ServiceProvider
 
     /**
      * Construct the TMDB service provider
+     *
+     * @param \Illuminate\Contracts\Foundation\Application $app
      */
-    public function __construct()
+    public function __construct(Application $app)
     {
-        // Call the parent constructor with all provided arguments
-        $arguments = func_get_args();
-        call_user_func_array(
-            [$this, 'parent::' . __FUNCTION__],
-            $arguments
-        );
+        parent::__construct($app);
 
         $this->registerProvider();
     }
